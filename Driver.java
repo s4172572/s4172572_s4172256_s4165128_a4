@@ -60,8 +60,6 @@ public class Driver {
         this.birthdate = birthdate;
     }
 
-
-
     // D1. Driver ID Rules
     // driverID validation
     public boolean isDriverIdValid() {
@@ -94,8 +92,6 @@ public class Driver {
         return driverID.substring(8, 10).matches("[A-Z]{2}");
     }
 
-
-
     // D2. Address format
     // address validation
     public boolean isAddressValid() {
@@ -122,6 +118,30 @@ public class Driver {
         // checks if first part matches format for an address, including letters for housing units
         return parts[0].matches("\\d+[A-Za-z]?");
     }
+
+    // D3. Birthday Format
+    // birthday validation
+    public boolean isBirthdayValid() {
+        // The birthdate must follow the format: DD-MM-YYYY
+        if (birthdate == null) {
+            return false;
+        }   
+
+        // checks if each column is a 2 digit number
+        // 0 must be prepended to single digit numbers, it is not done automatically
+        // checks format only, does not check realism or validity
+        return birthdate.matches("\\d{2}-\\d{2}-\\d{4}");
+    }
+
+    // Add full validation
+    public boolean isValid() {
+        return isDriverIdValid()
+            && isAddressValid()
+            && isBirthdayValid()
+            && experienceYears >= 0
+            && licenseType != null
+            && !licenseType.trim().isEmpty();
+        }
 
 
 
