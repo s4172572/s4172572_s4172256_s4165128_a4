@@ -1,12 +1,21 @@
+package com.guidancesystem;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class BusRepository {
     private static final String FILE_PATH = "data/buses.json";
     private Map<String, Bus> buses;
+    private Gson gson; // Instantiate Gson
 
     public BusRepository() {
         buses = new HashMap<>();
+        // GsonBuilder with pretty printing makes the JSON file readable
+        gson = new GsonBuilder().setPrettyPrinting().create(); 
         loadFromFile();
     }
 
@@ -51,14 +60,15 @@ public class BusRepository {
         return buses.size();
     }
 
-    // --- File Storage Methods ---
+    // File Storage Methods
+private void saveToFile() {
+        // Ensure the directory exists before saving
+        File file = new File(FILE_PATH);
+        file.getParentFile().mkdirs(); 
 
-    private void saveToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH))) {
-            for (Bus b : buses.values()) {
-                writer.println(b.getBusID() + ";" + b.getCapacity() + ";" + 
-                               b.getFuelLevel() + ";" + b.getFuelType());
-            }
+        try (Writer writer = new FileWriter(file)) {
+            // Convert the map's values (the Bus objects) into a JSON array and save
+            gson.toJson(buses.values(), writer);
         } catch (IOException e) {
             System.err.println("Error saving buses: " + e.getMessage());
         }
@@ -68,13 +78,14 @@ public class BusRepository {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length == 4) {
-                    Bus b = new Bus(parts[0], Integer.parseInt(parts[1]), 
-                                    Double.parseDouble(parts[2]), parts[3]);
+        try (Reader reader = new FileReader(file)) {
+            // Tell Gson what type of data to expect (a List of Bus objects)
+            Type busListType = new TypeToken<List<Bus>>(){}.getType();
+            List<Bus> busList = gson.fromJson(reader, busListType);
+
+            // Populate the HashMap from the loaded List
+            if (busList != null) {
+                for (Bus b : busList) {
                     buses.put(b.getBusID(), b);
                 }
             }

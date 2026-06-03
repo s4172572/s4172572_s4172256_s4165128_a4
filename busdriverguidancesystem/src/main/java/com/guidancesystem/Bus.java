@@ -1,3 +1,4 @@
+package com.guidancesystem;
 public class Bus {
     private String busID;
     private int capacity;

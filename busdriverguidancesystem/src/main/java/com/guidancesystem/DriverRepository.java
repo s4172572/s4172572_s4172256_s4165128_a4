@@ -1,12 +1,21 @@
+package com.guidancesystem;
 import java.io.*;
 import java.util.*;
+import java.lang.reflect.Type;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class DriverRepository {
     private static final String FILE_PATH = "data/drivers.json";
     private Map<String, Driver> drivers;
+    private Gson gson; // Instantiate Gson
 
     public DriverRepository() {
         drivers = new HashMap<>();
+        // GsonBuilder with pretty printing makes the JSON file readable
+        gson = new GsonBuilder().setPrettyPrinting().create(); 
         loadFromFile();
     }
 
@@ -57,16 +66,16 @@ public class DriverRepository {
         return drivers.size();
     }
 
-    // Saving to file
+    // --- File Storage Methods ---
 
     private void saveToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH))) {
-            for (Driver d : drivers.values()) {
-                // Using ';' as delimiter since address uses '|'
-                writer.println(d.getDriverID() + ";" + d.getName() + ";" + 
-                               d.getExperienceYears() + ";" + d.getLicenseType() + ";" + 
-                               d.getAddress() + ";" + d.getBirthdate());
-            }
+        // Ensure the directory exists before saving
+        File file = new File(FILE_PATH);
+        file.getParentFile().mkdirs(); 
+
+        try (Writer writer = new FileWriter(file)) {
+            // Convert the map's values (the Driver objects) into a JSON array and save
+            gson.toJson(drivers.values(), writer);
         } catch (IOException e) {
             System.err.println("Error saving drivers: " + e.getMessage());
         }
@@ -76,12 +85,14 @@ public class DriverRepository {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length == 6) {
-                    Driver d = new Driver(parts[0], parts[1], Integer.parseInt(parts[2]), parts[3], parts[4], parts[5]);
+        try (Reader reader = new FileReader(file)) {
+            // Tell Gson what type of data to expect (a List of Driver objects)
+            Type driverListType = new TypeToken<List<Driver>>(){}.getType();
+            List<Driver> driverList = gson.fromJson(reader, driverListType);
+
+            // Populate the HashMap from the loaded List
+            if (driverList != null) {
+                for (Driver d : driverList) {
                     drivers.put(d.getDriverID(), d);
                 }
             }
