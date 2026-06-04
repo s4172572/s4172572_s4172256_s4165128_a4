@@ -112,8 +112,6 @@ public class DriverRepositoryTest {
         Driver driver2 = new Driver("99abcd!@AA", "Test Name 2", 5, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "01-01-2000");
         repository.add(driver2);
         assertEquals(2, repository.count());
-
-        String jsonContent = Files.readString(Paths.get(FILE_PATH));
-        System.out.println("Sample JSON Output: \n" + jsonContent);
+        System.out.println("Final Driver Count: " + repository.count());
     }
 }

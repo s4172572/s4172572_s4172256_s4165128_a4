@@ -99,7 +99,6 @@ public class BusRepositoryTest {
         repository.add(bus2);
         assertEquals(2, repository.count());
 
-        String jsonContent = Files.readString(Paths.get(FILE_PATH));
-        System.out.println("Sample JSON Output: \n" + jsonContent);
+        System.out.println("Final Bus Count: " + repository.count());
     }
 }

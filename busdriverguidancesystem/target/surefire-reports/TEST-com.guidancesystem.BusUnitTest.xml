@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.guidancesystem.DriverRepositoryTest" time="0.02" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.guidancesystem.BusUnitTest" time="0.006" tests="15" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -60,10 +60,19 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testAddDriverWithUniqueId" classname="com.guidancesystem.DriverRepositoryTest" time="0"/>
-  <testcase name="testUpdateDriverCountAfterDriverIsAdded" classname="com.guidancesystem.DriverRepositoryTest" time="0.005"/>
-  <testcase name="testUpdateDetailsWithNonExistingId" classname="com.guidancesystem.DriverRepositoryTest" time="0.002"/>
-  <testcase name="testUpdateLicenseTypeWithGreaterThan10YearsExperience" classname="com.guidancesystem.DriverRepositoryTest" time="0.004"/>
-  <testcase name="testAddDriverWithExistingIdThrowsException" classname="com.guidancesystem.DriverRepositoryTest" time="0.003"/>
-  <testcase name="testUpdateLicenseTypeWithLessThan10YearsExperience" classname="com.guidancesystem.DriverRepositoryTest" time="0.004"/>
+  <testcase name="testB1_NormalCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB2_NormalCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB3_NormalCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB4_NormalCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB5_NormalCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB5_InvalidInput" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB5_EdgeCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB4_EdgeCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB3_EdgeCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB4_InvalidInput" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB2_EdgeCase" classname="com.guidancesystem.BusUnitTest" time="0.001"/>
+  <testcase name="testB1_EdgeCase" classname="com.guidancesystem.BusUnitTest" time="0"/>
+  <testcase name="testB3_InvalidInput" classname="com.guidancesystem.BusUnitTest" time="0.001"/>
+  <testcase name="testB2_InvalidInput" classname="com.guidancesystem.BusUnitTest" time="0.001"/>
+  <testcase name="testB1_InvalidInput" classname="com.guidancesystem.BusUnitTest" time="0"/>
 </testsuite>
