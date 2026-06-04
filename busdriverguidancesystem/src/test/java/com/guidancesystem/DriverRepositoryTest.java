@@ -49,7 +49,7 @@ public class DriverRepositoryTest {
         Driver driver1 = new Driver("34abcd!@WX", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver1);
 
-        Driver duplicateDriver = new Driver("34abcd!@WX", "Another Name", 5, "Light", "123|Fake Street", "01-01-1990");
+        Driver duplicateDriver = new Driver("34abcd!@WX", "Another Name", 5, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "01-01-1990");
         
         // JUnit 5 uses assertThrows with a lambda expression
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -60,11 +60,11 @@ public class DriverRepositoryTest {
 
     @Test
     public void testUpdateLicenseTypeWithGreaterThan10YearsExperience() {
-        Driver driver = new Driver("34abcd!@ZY", "Test Name", 12, "Light", "Address", "14-06-1988");
+        Driver driver = new Driver("34abcd!@ZY", "Test Name", 12, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            repository.update("34abcd!@ZY", 11, "Heavy", "Address", "14-06-1988");
+            repository.update("34abcd!@ZY", 11, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         });
         assertNotNull(exception.getMessage());
     }
@@ -72,7 +72,7 @@ public class DriverRepositoryTest {
     @Test
     public void testUpdateDetailsWithNonExistingId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            repository.update("34abcd!@WY", 12, "Heavy", "Address", "14-06-1977");
+            repository.update("34abcd!@WY", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
         });
         assertNotNull(exception.getMessage());
     }
@@ -92,11 +92,11 @@ public class DriverRepositoryTest {
     public void testUpdateDriverCountAfterDriverIsAdded() {
         assertEquals(0, repository.count());
 
-        Driver driver1 = new Driver("34abcd!@YZ", "Test Name", 12, "Heavy", "Address", "14-06-1988");
+        Driver driver1 = new Driver("34abcd!@YZ", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver1);
         assertEquals(1, repository.count());
 
-        Driver driver2 = new Driver("99abcd!@AA", "Test Name 2", 5, "Light", "Address", "01-01-2000");
+        Driver driver2 = new Driver("99abcd!@AA", "Test Name 2", 5, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "01-01-2000");
         repository.add(driver2);
         assertEquals(2, repository.count());
     }
