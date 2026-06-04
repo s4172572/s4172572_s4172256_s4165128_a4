@@ -1,14 +1,21 @@
 package com.guidancesystem;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.*;
-
 public class BusRepository {
-    private static final String FILE_PATH = "data/buses.json";
+    private static final String FILE_PATH = "src/main/resources/data/buses.json";
     private Map<String, Bus> buses;
     private Gson gson; // Instantiate Gson
 

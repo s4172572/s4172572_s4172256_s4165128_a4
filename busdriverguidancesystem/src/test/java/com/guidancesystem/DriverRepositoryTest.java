@@ -1,16 +1,18 @@
 package com.guidancesystem;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
+
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DriverRepositoryTest {
 
     private DriverRepository repository;
-    private final String FILE_PATH = "data/drivers.json";
+    private final String FILE_PATH = "src/main/resources/data/drivers.json";
 
     @BeforeEach
     public void setUp() {
@@ -37,9 +39,10 @@ public class DriverRepositoryTest {
         Driver duplicateDriver = new Driver("34abcd!@WX", "Another Name", 5, "Light", "123|Fake Street", "01-01-1990");
         
         // JUnit 5 uses assertThrows with a lambda expression
-        assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.add(duplicateDriver); 
         });
+        assertNotNull(exception.getMessage());
     }
 
     @Test
@@ -58,16 +61,18 @@ public class DriverRepositoryTest {
         Driver driver = new Driver("34abcd!@ZY", "Test Name", 12, "Light", "Address", "14-06-1988");
         repository.add(driver);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.update("34abcd!@ZY", 11, "Heavy", "Address", "14-06-1988");
         });
+        assertNotNull(exception.getMessage());
     }
 
     @Test
     public void testUpdateDetailsWithNonExistingId() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.update("34abcd!@WY", 12, "Heavy", "Address", "14-06-1977");
         });
+        assertNotNull(exception.getMessage());
     }
 
     @Test
