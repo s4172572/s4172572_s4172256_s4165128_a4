@@ -1,6 +1,9 @@
 package com.guidancesystem;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,9 +35,12 @@ public class BusRepositoryTest {
     }
 
     @Test
-    public void testAddNewBus() {
+    public void testAddNewBus() throws IOException {
         Bus bus = new Bus("10000002", 60, 85.5, "Electricity");
         repository.add(bus);
+
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
 
         assertEquals(1, repository.count());
         Bus retrieved = repository.retrieve("10000002");
@@ -43,7 +49,7 @@ public class BusRepositoryTest {
     }
 
     @Test
-    public void testAddBusWhereIdIsExisting() {
+    public void testAddBusWhereIdIsExisting() throws IOException {
         Bus bus1 = new Bus("10000001", 60, 85.5, "Electricity");
         repository.add(bus1);
 
@@ -52,30 +58,37 @@ public class BusRepositoryTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.add(duplicateBus); 
         });
+        
+        System.out.println("Expected Error Caught: " + exception.getMessage());
         assertEquals("Bus ID must be unique. Duplicate found: 10000001", exception.getMessage());
     }
 
     @Test
-    public void testUpdateBusDetailsWhereIdIsExisting() {
+    public void testUpdateBusDetailsWhereIdIsExisting() throws IOException {
         Bus bus = new Bus("10000001", 60, 85.5, "Electricity");
         repository.add(bus);
 
         repository.update("10000001", 60, 85.5, "Diesel");
+
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
 
         Bus updatedBus = repository.retrieve("10000001");
         assertEquals("Diesel", updatedBus.getFuelType());
     }
 
     @Test
-    public void testUpdateBusDetailsWhereIdIsNotExisting() {
+    public void testUpdateBusDetailsWhereIdIsNotExisting() throws IOException {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.update("10000005", 60, 85.5, "Electricity");
         });
+        
+        System.out.println("Expected Error Caught: " + exception.getMessage());
         assertNotNull(exception.getMessage());
     }
 
     @Test
-    public void testUpdateBusCountAfterBusHasBeenCreated() {
+    public void testUpdateBusCountAfterBusHasBeenCreated() throws IOException {
         assertEquals(0, repository.count());
 
         Bus bus1 = new Bus("10000001", 60, 85.5, "Electricity");
@@ -85,5 +98,8 @@ public class BusRepositoryTest {
         Bus bus2 = new Bus("10000003", 60, 85.5, "Electricity");
         repository.add(bus2);
         assertEquals(2, repository.count());
+
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
     }
 }

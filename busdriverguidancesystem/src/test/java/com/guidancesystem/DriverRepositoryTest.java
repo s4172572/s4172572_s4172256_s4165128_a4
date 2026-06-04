@@ -1,6 +1,9 @@
 package com.guidancesystem;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,9 +37,12 @@ public class DriverRepositoryTest {
 
 
     @Test
-    public void testAddDriverWithUniqueId() {
+    public void testAddDriverWithUniqueId() throws IOException {
         Driver driver = new Driver("34abcd!@WZ", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver);
+
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
 
         assertEquals(1, repository.count());
         Driver retrieved = repository.retrieve("34abcd!@WZ");
@@ -45,7 +51,7 @@ public class DriverRepositoryTest {
     }
 
     @Test
-    public void testAddDriverWithExistingIdThrowsException() {
+    public void testAddDriverWithExistingIdThrowsException() throws IOException {
         Driver driver1 = new Driver("34abcd!@WX", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver1);
 
@@ -55,41 +61,48 @@ public class DriverRepositoryTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.add(duplicateDriver); 
         });
+        System.out.println("Expected Error Caught: " + exception.getMessage());
         assertNotNull(exception.getMessage());
     }
 
     @Test
-    public void testUpdateLicenseTypeWithGreaterThan10YearsExperience() {
+    public void testUpdateLicenseTypeWithGreaterThan10YearsExperience() throws IOException {
         Driver driver = new Driver("34abcd!@ZY", "Test Name", 12, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.update("34abcd!@ZY", 11, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         });
+        System.out.println("Expected Error Caught: " + exception.getMessage());
         assertNotNull(exception.getMessage());
     }
 
     @Test
-    public void testUpdateDetailsWithNonExistingId() {
+    public void testUpdateDetailsWithNonExistingId() throws IOException {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             repository.update("34abcd!@WY", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
         });
+        System.out.println("Expected Error Caught: " + exception.getMessage());
+
         assertNotNull(exception.getMessage());
     }
 
     @Test
-    public void testUpdateLicenseTypeWithLessThan10YearsExperience() {
+    public void testUpdateLicenseTypeWithLessThan10YearsExperience() throws IOException  {
         Driver driver = new Driver("34abcd!@WX", "Test Name", 9, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
         repository.add(driver);
 
         repository.update("34abcd!@WX", 9, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
-
+        
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
+        
         Driver updatedDriver = repository.retrieve("34abcd!@WX");
         assertEquals("Heavy", updatedDriver.getLicenseType());
     }
 
     @Test
-    public void testUpdateDriverCountAfterDriverIsAdded() {
+    public void testUpdateDriverCountAfterDriverIsAdded() throws IOException  {
         assertEquals(0, repository.count());
 
         Driver driver1 = new Driver("34abcd!@YZ", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
@@ -99,5 +112,8 @@ public class DriverRepositoryTest {
         Driver driver2 = new Driver("99abcd!@AA", "Test Name 2", 5, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "01-01-2000");
         repository.add(driver2);
         assertEquals(2, repository.count());
+
+        String jsonContent = Files.readString(Paths.get(FILE_PATH));
+        System.out.println("Sample JSON Output: \n" + jsonContent);
     }
 }
