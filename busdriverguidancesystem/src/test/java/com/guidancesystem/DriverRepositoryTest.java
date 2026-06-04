@@ -31,9 +31,22 @@ public class DriverRepositoryTest {
         }
     }
 
+
+
+    @Test
+    public void testAddDriverWithUniqueId() {
+        Driver driver = new Driver("34abcd!@WZ", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
+        repository.add(driver);
+
+        assertEquals(1, repository.count());
+        Driver retrieved = repository.retrieve("34abcd!@WZ");
+        assertNotNull(retrieved);
+        assertEquals("Test Name", retrieved.getName());
+    }
+
     @Test
     public void testAddDriverWithExistingIdThrowsException() {
-        Driver driver1 = new Driver("34abcd!@WX", "Test Name", 12, "Heavy", "435-437|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
+        Driver driver1 = new Driver("34abcd!@WX", "Test Name", 12, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
         repository.add(driver1);
 
         Driver duplicateDriver = new Driver("34abcd!@WX", "Another Name", 5, "Light", "123|Fake Street", "01-01-1990");
@@ -43,17 +56,6 @@ public class DriverRepositoryTest {
             repository.add(duplicateDriver); 
         });
         assertNotNull(exception.getMessage());
-    }
-
-    @Test
-    public void testAddDriverWithUniqueId() {
-        Driver driver = new Driver("34abcd!@WZ", "Test Name", 12, "Heavy", "435-437|Swanston Street|Melbourne|VIC|Australia", "14-06-1988");
-        repository.add(driver);
-
-        assertEquals(1, repository.count());
-        Driver retrieved = repository.retrieve("34abcd!@WZ");
-        assertNotNull(retrieved);
-        assertEquals("Test Name", retrieved.getName());
     }
 
     @Test
@@ -77,10 +79,10 @@ public class DriverRepositoryTest {
 
     @Test
     public void testUpdateLicenseTypeWithLessThan10YearsExperience() {
-        Driver driver = new Driver("34abcd!@WX", "Test Name", 9, "Light", "435-437|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
+        Driver driver = new Driver("34abcd!@WX", "Test Name", 9, "Light", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
         repository.add(driver);
 
-        repository.update("34abcd!@WX", 9, "Heavy", "435-437|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
+        repository.update("34abcd!@WX", 9, "Heavy", "435|Swanston Street|Melbourne|VIC|Australia", "14-06-1977");
 
         Driver updatedDriver = repository.retrieve("34abcd!@WX");
         assertEquals("Heavy", updatedDriver.getLicenseType());

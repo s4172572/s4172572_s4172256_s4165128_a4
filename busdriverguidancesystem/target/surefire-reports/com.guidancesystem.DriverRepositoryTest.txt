@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.guidancesystem.DriverRepositoryTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.081 s <<< FAILURE! - in com.guidancesystem.DriverRepositoryTest
-testAddDriverWithExistingIdThrowsException  Time elapsed: 0.065 s  <<< ERROR!
-java.lang.IllegalArgumentException: Driver fails validation rules.
-	at com.guidancesystem.DriverRepositoryTest.testAddDriverWithExistingIdThrowsException(DriverRepositoryTest.java:37)
-

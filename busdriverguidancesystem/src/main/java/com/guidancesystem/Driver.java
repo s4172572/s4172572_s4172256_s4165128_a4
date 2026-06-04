@@ -143,28 +143,5 @@ public class Driver {
             && licenseType != null
             && !licenseType.trim().isEmpty();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
